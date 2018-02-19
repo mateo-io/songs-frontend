@@ -7,31 +7,44 @@ import TextField from 'material-ui/TextField'
 
 // import { Observable } from 'rxjs'
 import { Subject } from 'rxjs/Subject'
+import Dropdown from './Dropdown'
+
+// youtube api
+import { getVideosList } from './Youtube'
+
+// Stream
 const inputStream = new Subject()
 
-class Home extends React.Component {
+export default class Home extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       name: '',
+      results: [],
     }
   }
 
   componentWillMount() {
     inputStream.subscribe(val => {
-      console.log(`input subscribe ${val}`)
-      this.setState({ query: val, results: [] }, () =>
-        this.getSearchResults(this.state.query)
+      console.log(`input subscribibtion value ${val}`)
+      this.setState({ name: val, results: [] }, () =>
+        this.getSearchResults(this.state.name)
       )
-
-      // search for faces
     })
   }
 
   getSearchResults(query) {
-    // helloooooo
     console.log(`getSearchResults`)
-    this.setState({ results: [{ id: 4, type: 'faces', match: 'Karen' }] })
+    getVideosList(query).then(songs => {
+      console.log(`getSearchResults res ${songs}`)
+      this.setState({
+        results: songs,
+        // [
+        //   { id: 4, type: 'artist', match: 'Metallica' },
+        //   { id: 5, match: 'Mark Anthony' },
+        // ],
+      })
+    })
 
     // Api.fetchByDates('query')
     //   .then((res:Array<any>) => console.log(`fetchByDates respone ${res}`))
@@ -52,22 +65,34 @@ class Home extends React.Component {
   }
 
   render() {
+    const { results, name } = this.state
     return (
       <Root>
         <Grid container spacing={24}>
           <Grid item md={12}>
-            <WhitePaper>
+            <WhitePaper center elevation={10}>
               <Title>observable world</Title>
               <form noValidate autoComplete="off">
                 <TextField
                   id="name"
-                  label="Name"
-                  value={this.state.name}
+                  label="name"
+                  value={name}
                   onChange={this.handleChange('name')}
                   margin="normal"
                 />
               </form>
-              <Body>Hola</Body>
+              <Body>Introduce el nombre de una cancion</Body>
+            </WhitePaper>
+          </Grid>
+
+          <Grid item md={12}>
+            <WhitePaper>
+              <Dropdown
+                items={results}
+                onChange={selectedItem => this.getSearchContents(selectedItem)}
+                onInputChange={e => inputStream.next(e.target.value)}
+                // onInputChange={(e: any) => console.log(`input change ${e.target.value}`)}
+              />
             </WhitePaper>
           </Grid>
         </Grid>
@@ -76,9 +101,7 @@ class Home extends React.Component {
   }
 }
 
-const Title = styled('h1')`
-  text-align: center;
-`
+const Title = styled('h1')``
 
 const Body = styled('p')`
   font-family: 'Lato', sans-serif;
@@ -87,10 +110,9 @@ const Body = styled('p')`
 const WhitePaper = styled(Paper)`
   padding: 20px;
   margin: 30px;
+  ${props => props.center && `text-align: center`};
 `
 
 const Root = styled('div')`
   flex-grow: 1;
 `
-
-export default Home
