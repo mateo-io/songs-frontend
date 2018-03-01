@@ -1,5 +1,5 @@
-import React from "react";
-import Downshift from "downshift";
+import React from 'react'
+import Downshift from 'downshift'
 
 // Components
 import {
@@ -9,15 +9,35 @@ import {
   ItemsWrapper,
   ItemThumb,
   ItemBody,
-  Item
-} from "./Components";
-import SearchExplanation from "./SearchExplanation";
+  Item,
+} from './Components'
+import SearchExplanation from './SearchExplanation'
+
+// load dropdown input css styles
+require('./styles.css')
+
+const randomSong = [
+  'Calle 13 - La vida',
+  'Shakira - Waka Waka',
+  'Luis Fonsi - Despacito',
+  'The Beatles - Let It Be',
+  'Don Omar - Salio el sol',
+  'Ozuna - Criminal',
+  'Ozuna - Se Preparo',
+  'Chakuza - Eines Tages',
+  'Adele - Hello',
+  'Katy Perry - Fireworks',
+  'Camila Cabello - Havana',
+]
+
+const getRandomSong = () =>
+  randomSong[Math.floor(randomSong.length * Math.random())]
 
 function Dropdown({ items, onChange, onInputChange }) {
   return (
     <Downshift
       onChange={onChange}
-      itemToString={item => (item == null ? "" : String(item.match))}
+      itemToString={item => (item == null ? '' : String(item.match))}
       render={({
         getInputProps,
         isOpen,
@@ -26,37 +46,38 @@ function Dropdown({ items, onChange, onInputChange }) {
         selectedItem,
         highlightedIndex,
         openMenu,
-        closeMenu
+        closeMenu,
       }) => {
         return (
-          <div style={{ width: "400px", margin: "10px auto" }}>
+          <div style={{ width: '400px', margin: '20px auto' }}>
             <SearchWrapper onClick={() => openMenu()} isOpen={isOpen}>
               <InputWrapper
                 {...getInputProps({
-                  placeholder: "Search",
+                  placeholder: getRandomSong(),
+                  className: 'input',
                   onChange: onInputChange,
-                  id: "search-input"
+                  id: 'search-input',
                 })}
               />
               <DropdownBody
                 closeMenu={closeMenu}
                 isOpen={isOpen}
                 items={items}
-                inputValue={inputValue ? inputValue : ""}
+                inputValue={inputValue ? inputValue : ''}
                 getItemProps={getItemProps}
               />
             </SearchWrapper>
           </div>
-        );
+        )
       }}
     />
-  );
+  )
 }
 
 // filter function will be changed to -> Array not empty.
 const DropdownBody = props => {
-  const { isOpen, items, inputValue, getItemProps } = props;
-  const isInputEmpty = inputValue.length === 0;
+  const { isOpen, items, inputValue, getItemProps } = props
+  const isInputEmpty = inputValue.length === 0
 
   if (isOpen) {
     return (
@@ -88,10 +109,10 @@ const DropdownBody = props => {
           ))
         )}
       </ItemsWrapper>
-    );
+    )
   } else {
-    return null;
+    return null
   }
-};
+}
 
-export default Dropdown;
+export default Dropdown

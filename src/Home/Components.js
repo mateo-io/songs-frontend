@@ -1,9 +1,8 @@
-import React from "react";
-import styled from "react-emotion";
-import TextField from "material-ui/TextField";
+import styled from 'react-emotion'
+import TextField from 'material-ui/TextField'
 
 // SEARCH
-export const SearchWrapper = styled("div")`
+export const SearchWrapper = styled('div')`
   width: 245px;
   height: 32px;
   right: 15px;
@@ -12,39 +11,37 @@ export const SearchWrapper = styled("div")`
   z-index: 10;
   padding-top: 5px;
   border-radius: 100px;
-`;
+`
 
 export const InputWrapper = styled(TextField)`
   position: relative;
+  text-align: center;
   top: 5px;
-  min-width: 400px;
-  margin-left: 33px;
+  min-width: 380px;
   border: none;
   background: transparent;
-  font-family: "SFUIText";
   font-weight: normal;
   font-size: 16px;
-`;
+`
 
-export const ItemExplain = styled("div")`
+export const ItemExplain = styled('div')`
   padding: 10px 0;
   background-color: white;
   color: #96a1ae;
-`;
+`
 
 // SEARCH RESULTS
-export const ItemsWrapper = styled("div")`
+export const ItemsWrapper = styled('div')`
   margin-top: 20px;
-  padding: ${props => (props.paddingTop ? "10px" : "0 10px")};
+  padding: ${props => (props.paddingTop ? '10px' : '0 10px')};
   z-index: 10;
   position: relative;
   background: white;
   color: #96a1ae;
   min-width: 500px;
-`;
+`
 
-export const Item = styled("div")`
-  padding: 15px 0;
+export const Item = styled('div')`
   z-index: 5;
 
   &:hover {
@@ -62,23 +59,24 @@ export const Item = styled("div")`
   background-color: white;
   color:#96a1ae;
   `};
-  font-weight: ${props => (props.selected ? "bold" : "normal")};
-`;
+  font-weight: ${props => (props.selected ? 'bold' : 'normal')};
+`
 
 // ITEM COMPONENTS
-export const ItemThumbWrapper = styled("div")`
+export const ItemThumbWrapper = styled('div')`
   display: inline-block;
   width: 120px;
   padding: 12px;
-`;
+`
 
-export const ItemThumb = styled("img")`
+export const ItemThumb = styled('img')`
   width: ${props => props.width};
   height: ${props => props.height};
-`;
+`
 
-export const ItemBody = styled("div")`
+export const ItemBody = styled('div')`
   display: inline-block;
+  height: auto;
   width: 300px;
 
   h3 {
@@ -92,4 +90,4 @@ export const ItemBody = styled("div")`
     text-transform: uppercase;
     color: black;
   }
-`;
+`
