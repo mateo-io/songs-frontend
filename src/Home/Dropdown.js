@@ -92,18 +92,18 @@ const DropdownBody = props => {
               onMouseDown={() => setTimeout(() => props.closeMenu(), 200)}
             >
               <ItemThumbWrapper>
-                {item.thumb && (
-                  <ItemThumb
-                    height={item.thumb.height}
-                    width={item.thumb.width}
-                    src={item.thumb.url}
-                  />
-                )}
+                <ItemThumb
+                  height={item.thumb.height}
+                  width={item.thumb.width}
+                  src={item.thumb.url}
+                />
               </ItemThumbWrapper>
 
               <ItemBody>
-                <h3>{item.match}</h3>
-                <p>{item.type}</p>
+                <div style={{ position: 'relative', top: '-50%' }}>
+                  <h3>{item.match}</h3>
+                  <p>{item.artist && item.artist.slice(0, 20)}</p>
+                </div>
               </ItemBody>
             </Item>
           ))

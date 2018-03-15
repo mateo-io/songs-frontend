@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
+import YouTube from 'react-youtube'
 
 import Paper from 'material-ui/Paper'
 import Grid from 'material-ui/Grid'
@@ -10,6 +11,7 @@ import Dropdown from './Dropdown'
 
 // youtube api
 import { getVideosList } from './Youtube'
+import { translateText } from './Translate'
 
 // Stream
 const inputStream = new Subject()
@@ -20,8 +22,16 @@ export default class Home extends React.Component {
     this.state = {
       name: '',
       results: [],
+      selectedSong: 0,
+      lyrics: 'Song lyrics...if you choose one',
     }
   }
+
+  // state should be
+  // query
+  // selected song title, id, artist
+  // search results array
+  // lyrics fetched from
 
   componentWillMount() {
     inputStream.subscribe(query => {
@@ -34,27 +44,41 @@ export default class Home extends React.Component {
   }
 
   getSearchResults(query) {
-    console.log(`getSearchResults`)
     getVideosList(query).then(songs => {
-      console.log(`getSearchResults res ${songs}`)
       this.setState({
         results: songs,
       })
     })
   }
 
-  getSearchContents(query) {
-    console.log(`getSearchContents with query ${JSON.stringify(query)}`)
-  }
-
-  handleChange = name => event => {
+  getSearchContents(song) {
+    console.log(`getSearchContents with song ${JSON.stringify(song)}`)
     this.setState({
-      [name]: event.target.value,
+      selectedSong: song.videoId,
     })
+    const query = `${song.artist} ${song.match}`
+    fetch('http://localhost:8000/api/scrape', {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        query,
+        language: 'english',
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(`getLyrics answered with ${data} - ${JSON.stringify(data)}`)
+        this.setState({ lyrics: data.payload })
+      })
+      .catch(err => console.error(`Error fetching lyrics`))
   }
 
   render() {
-    const { results } = this.state
+    // console.log(translateText('i love you', 'en', ''))
+    const { results, selectedSong } = this.state
+    console.log(`selectedSong ${selectedSong}`)
     return (
       <Root>
         <Grid container spacing={24}>
@@ -70,9 +94,25 @@ export default class Home extends React.Component {
             </WhitePaper>
           </Grid>
 
+          <Grid spacing={0} item md={12}>
+            {selectedSong.length > 0 ? (
+              <WhitePaper margin={0} center="true" elevation={0}>
+                <YouTube
+                  opts={{
+                    width: '100%',
+                    playerVars: {
+                      autoplay: 1,
+                    },
+                  }}
+                  videoId={selectedSong}
+                />
+              </WhitePaper>
+            ) : null}
+          </Grid>
+
           <Grid item md={6} xs={12}>
             <WhitePaper center="true">
-              <Body>Lyrics</Body>
+              <Body dangerouslySetInnerHTML={{ __html: this.state.lyrics }} />
             </WhitePaper>
           </Grid>
 
@@ -101,7 +141,8 @@ const Body = styled('p')`
 
 const WhitePaper = styled(Paper)`
   padding: 20px;
-  margin: 30px;
+  border-radius: 10px;
+  margin: ${props => (props.margin >= 0 ? `${props.margin}px` : '30px')};
   ${props => props.center && `text-align: center`};
 `
 

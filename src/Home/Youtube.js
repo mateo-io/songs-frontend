@@ -3,7 +3,7 @@ const baseUrl =
 
 const key = '&key=AIzaSyB7F2mssotndn4lHpQnPRhIolAXJ9bC8A0'
 
-const getVideosList = query => {
+export const getVideosList = query => {
   return fetch(`${baseUrl}${query}${key}`, {
     method: 'GET',
     headers: new Headers({}),
@@ -29,9 +29,10 @@ const getVideosList = query => {
 
           return {
             id: `${songArtist}-${songName}`,
-            type: songArtist,
+            artist: songArtist,
             match: songNameFormatted,
             thumb: item.snippet.thumbnails.default,
+            videoId: item.id.videoId,
           }
         })
       })
@@ -42,5 +43,3 @@ const getVideosList = query => {
       )
     )
 }
-
-export { getVideosList }

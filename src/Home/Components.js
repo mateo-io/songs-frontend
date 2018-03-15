@@ -17,7 +17,9 @@ export const InputWrapper = styled(TextField)`
   position: relative;
   text-align: center;
   top: 5px;
-  min-width: 380px;
+  left: 40px;
+
+  min-width: 300px;
   border: none;
   background: transparent;
   font-weight: normal;
@@ -33,16 +35,19 @@ export const ItemExplain = styled('div')`
 // SEARCH RESULTS
 export const ItemsWrapper = styled('div')`
   margin-top: 20px;
-  padding: ${props => (props.paddingTop ? '10px' : '0 10px')};
+  padding: '10px';
   z-index: 10;
   position: relative;
+  right: 40px;
   background: white;
   color: #96a1ae;
-  min-width: 500px;
+  min-width: 440px;
 `
 
 export const Item = styled('div')`
   z-index: 5;
+  margin: 10px 0;
+  height: 110px;
 
   &:hover {
     background: grey;
@@ -65,29 +70,33 @@ export const Item = styled('div')`
 // ITEM COMPONENTS
 export const ItemThumbWrapper = styled('div')`
   display: inline-block;
-  width: 120px;
-  padding: 12px;
+  width: 100px;
+  /* padding: 8px; */
 `
 
 export const ItemThumb = styled('img')`
+  margin: 10px;
   width: ${props => props.width};
   height: ${props => props.height};
 `
 
 export const ItemBody = styled('div')`
+  position: relative;
   display: inline-block;
-  height: auto;
-  width: 300px;
+  height: 50px;
+  width: 340px;
 
   h3 {
     color: orange;
-    size: 16px;
-    font-style: italic;
+    font-weight: 700;
+    size: 20px;
   }
 
   p {
-    size: 20px;
+    size: 16px;
     text-transform: uppercase;
+    font-weight: 300;
+    letter-spacing: 1.5px;
     color: black;
   }
 `
